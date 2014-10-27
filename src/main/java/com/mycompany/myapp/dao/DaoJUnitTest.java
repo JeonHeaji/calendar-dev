@@ -116,5 +116,8 @@ public class DaoJUnitTest {
 	public void getAllEventAttendees() {
 		// TODO Assignment 3
 		// 각 이벤트 별로 등록된 Attendee 개수가 3인지 확인하는 테스트 코드 
+		for (int i = 0; i < numInitialNumEvents; i++) {
+			assertThat(this.eventAttendeeDao.findEventAttendeeByEventId(events[i].getId()).size(), is(3));
+		}
 	}
 }

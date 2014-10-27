@@ -76,7 +76,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			@Override
 			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-				PreparedStatement ps = connection.prepareStatement("insert into calendar_users(email, password, name) values(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement ps = connection.prepareStatement("insert into event_attendees(email, password, name) values(?,?,?)", Statement.RETURN_GENERATED_KEYS);
 				ps.setString(1, userToAdd.getEmail());
 				ps.setString(2, userToAdd.getPassword());
 				ps.setString(3, userToAdd.getName());

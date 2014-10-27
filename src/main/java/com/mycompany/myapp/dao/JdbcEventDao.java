@@ -106,12 +106,30 @@ public class JdbcEventDao implements EventDao {
 	public List<Event> findEventsByLevel(EventLevel eventLevel) {
 		// TODO Assignment 3
 		// 인자로 받은 이벤트 레벨에 대해 해당 레벨을 지니고 있는 이벤트들을 반환한다.
-		return null;
+		String sql_query = "select * from events where eventLevel = ?";
+		return this.jdbcTemplate.query(sql_query, new Object[] {eventLevel}, rowMapper);
 	}
 
 	@Override
     public void udpateEvent(Event event) {
 		// TODO Assignment 3
 		// 인자로 받은 이벤트가 지닌 각 필드 값으로 해당 이벤트 DB 테이블 내 칼럼을 업데이트 한다. 
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+
+		jdbcTemplate.update(new PreparedStatementCreator() {
+			@Override
+			public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+				PreparedStatement ps = connection.prepareStatement("insert into events(id, when, summary, description, owner, num_likes, event_level) values(?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+				ps.setInt(1, event.getId());
+				ps.setObject(2, event.getWhen());
+				ps.setObject(3, event.getSummary());
+				ps.setObject(4, event.getDescription());
+				ps.setObject(5, event.getOwner());
+				ps.setObject(6, event.getNumLikes());
+				ps.setObject(7, event.getEventLevel());
+
+				return ps;
+			}
+		}, keyHolder);
 	}
 }
